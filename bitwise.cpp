@@ -3,7 +3,8 @@
 using namespace std;
 
 vector<string> split_string(string);
-void solution(vector<int> v);
+void solution(vector<vector<int>>& numberPairs);
+void printNumberPairs(vector<vector<int>>& np);
 
 
 int main()
@@ -11,6 +12,8 @@ int main()
   int t;
   cin >> t;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  
+  vector<vector<int>> numberPairs;
 
   for (int t_itr = 0; t_itr < t; t_itr++) {
     string nk_temp;
@@ -18,10 +21,15 @@ int main()
 
     vector<string> nk = split_string(nk_temp);
 
-    int n = stoi(nk[0]);
+    vector<int> tmp;
+    tmp.push_back(stoi(nk[0]));
+    tmp.push_back(stoi(nk[1]));
 
-    int k = stoi(nk[1]);
+    numberPairs.push_back(tmp);
   }
+
+  // printNumberPairs(numberPairs);
+  solution(numberPairs);
 
   return 0;
 }
@@ -55,6 +63,52 @@ vector<string> split_string(string input_string) {
   return splits;
 }
 
-void solution(vector<int> v) {
+void printNumberPairs(vector<vector<int>>& np) {
+  for (int i = 0; i < np.size(); i++) {
+    for (int j = 0; j < np[i].size(); j++) {
+      printf("[%d][%d] = %d\n", i, j, np[i][j]);
+    }
+  }
+}
 
+// numberPairs[i][0] = N
+// numberPairs[i][1] = K
+// set S = {1, 2, 3, ... , N}
+// 2 <= K <= N
+void solution(vector<vector<int>>& numberPairs) {
+  vector<vector<int>> S; // conains a list of sets S
+  vector<int> solution;
+
+   for (int i = 0; i < numberPairs.size(); i++) {
+    vector<int> tmpS;
+    int max = 0;
+    int tmp;
+    // form the S set based on numberPairs[i][0] (N)
+    for (int q = 1; q <= numberPairs[i][0]; q++) {
+      tmpS.push_back(q);
+    }
+
+    // debug
+    // cout << "k = " << numberPairs[i][1] << endl;
+
+    // find max
+    for (int p = 0; p < tmpS.size(); p++) {
+      for (int r = p + 1; r < tmpS.size(); r++) {
+        tmp = tmpS[p] & tmpS[r];
+        // debug
+        // printf("i=%d, tmp=%d, K=%d\n", i, tmp, numberPairs[i][1]);
+        if ( (tmp > max) && (tmp < numberPairs[i][1]) ) {
+          max = tmp;
+        }
+      }
+      // debug
+      // printf("\n");
+    }
+    // solution.push_back(tmp); // BUG !
+    solution.push_back(max);
+   }
+
+   for (int l = 0; l < solution.size(); l++) {
+     cout << solution[l] << endl;
+   }
 }
