@@ -88,23 +88,15 @@ void solution(vector<vector<int>>& numberPairs) {
       tmpS.push_back(q);
     }
 
-    // debug
-    // cout << "k = " << numberPairs[i][1] << endl;
-
     // find max
     for (int p = 0; p < tmpS.size(); p++) {
       for (int r = p + 1; r < tmpS.size(); r++) {
         tmp = tmpS[p] & tmpS[r];
-        // debug
-        // printf("i=%d, tmp=%d, K=%d\n", i, tmp, numberPairs[i][1]);
         if ( (tmp > max) && (tmp < numberPairs[i][1]) ) {
           max = tmp;
         }
       }
-      // debug
-      // printf("\n");
     }
-    // solution.push_back(tmp); // BUG !
     solution.push_back(max);
    }
 
